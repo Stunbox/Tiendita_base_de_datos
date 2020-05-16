@@ -5,3 +5,11 @@ ON venta
 FOR EACH ROW 
 UPDATE producto SET stock= stock+ deleted.Cantidad
 WHERE idProducto= (SELECT idProducto FROM venta_producto WHERE idVenta= deleted.idVenta);
+
+DELIMITER \\
+Create Trigger DecreaseStock after insert on venta_producto
+For each row 
+BEGIN 
+      update producto set Stock = (Stock - new.Cantidad) where idProducto = new.idProducto;
+END \\
+DELIMITER ;
